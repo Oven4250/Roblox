@@ -1,0 +1,85 @@
+--[[
+Hello,
+this script was made by oven4250 for the game https://www.roblox.com/games/132177827387692/Slippery-Stairs
+]]
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local SaveManager =
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(
+	game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua")
+)()
+
+local Window = Fluent:CreateWindow({
+	Title = "Slippery Stairs GUI",
+	SubTitle = "by Oven",
+	TabWidth = 160,
+	Size = UDim2.fromOffset(580, 460),
+	Acrylic = false,
+	Theme = "Dark",
+	MinimizeKey = Enum.KeyCode.LeftControl,
+})
+
+local Tabs = {
+	Main = Window:AddTab({ Title = "Main", Icon = "mountain" }),
+	Settings = Window:AddTab({ Title = "Settings", Icon = "settings" }),
+}
+
+local rs = game.ReplicatedStorage
+local ps = rs.Remotes.FromClient.Push
+local ss = rs.Remotes.FromClient.SwordSwing
+
+local Options = Fluent.Options
+
+local PushToggle = Tabs.Main:AddToggle("PushSpam", { Title = "Push Spam", Default = false })
+PushToggle:OnChanged(function(value)
+	task.spawn(function()
+		while value and task.wait(0.01) do
+			ps:FireServer()
+			if not Options.PushSpam.Value then
+				break
+			end
+		end
+	end)
+end)
+
+local SwingToggle = Tabs.Main:AddToggle("SwingSpam", { Title = "Sword Swing Spam", Default = false })
+SwingToggle:OnChanged(function(value)
+	task.spawn(function()
+		while value and task.wait(0.01) do
+			ss:FireServer()
+			if not Options.SwingSpam.Value then
+				break
+			end
+		end
+	end)
+end)
+
+Tabs.Main:AddButton({
+	Title = "Load Infinite Yield",
+	Description = "Loads the Infinite Yield admin script.",
+	Callback = function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+	end,
+})
+
+SaveManager:SetLibrary(Fluent)
+InterfaceManager:SetLibrary(Fluent)
+
+SaveManager:IgnoreThemeSettings()
+SaveManager:SetIgnoreIndexes({})
+
+InterfaceManager:SetFolder("FluentScriptHub")
+SaveManager:SetFolder("FluentScriptHub/SlipperyStairs")
+
+InterfaceManager:BuildInterfaceSection(Tabs.Settings)
+SaveManager:BuildConfigSection(Tabs.Settings)
+
+Window:SelectTab(1)
+
+Fluent:Notify({
+	Title = "Fluent UI",
+	Content = "Slippery Stairs GUI loaded.",
+	Duration = 6,
+})
+
+SaveManager:LoadAutoloadConfig()
