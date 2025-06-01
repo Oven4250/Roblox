@@ -20,7 +20,7 @@ local Window = Fluent:CreateWindow({
 })
 
 local Tabs = {
-	Main = Window:AddTab({ Title = "Main", Icon = "mountain" }),
+	Main = Window:AddTab({ Title = "Main", Icon = "mountain", Description = "Allows you to Push/Sword swing people without the gamepass or anything amazing for trolling" }),
 	Settings = Window:AddTab({ Title = "Settings", Icon = "settings" }),
 }
 
