@@ -20,9 +20,16 @@ local Window = Fluent:CreateWindow({
 })
 
 local Tabs = {
-	Main = Window:AddTab({ Title = "Main", Icon = "mountain", Description = "Allows you to Push/Sword swing people without the gamepass or anything amazing for trolling" }),
+	Main = Window:AddTab({
+		Title = "Main",
+		Icon = "mountain",
+	}),
 	Settings = Window:AddTab({ Title = "Settings", Icon = "settings" }),
 }
+    Tabs.Main:AddParagraph({
+        Title = "Usage Example : ",
+        Content = "This Trolling GUI for Slippery stairs allows you to automate pushing and sword swinging actions."
+    })
 
 local rs = game.ReplicatedStorage
 local ps = rs.Remotes.FromClient.Push
@@ -78,7 +85,7 @@ Window:SelectTab(1)
 
 Fluent:Notify({
 	Title = "Fluent UI",
-	Content = "Slippery Stairs GUI loaded.",
+	Content = "Slippery Stairs Trolling GUI loaded.",
 	Duration = 6,
 })
 
