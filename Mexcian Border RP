@@ -1,0 +1,182 @@
+-- W??? SIGMA??
+--!strict
+
+local p = game:GetService("Players").LocalPlayer
+repeat task.wait() until p and p:FindFirstChild("PlayerGui")
+
+local s = Instance.new("ScreenGui")
+s.Name = "SigmaSauce"
+s.ResetOnSpawn = false
+s.Parent = p:WaitForChild("PlayerGui")
+
+local sh = Instance.new("Frame")
+sh.Size = UDim2.new(0, 410, 0, 510)
+sh.Position = UDim2.new(0.5, -205, 0.5, -255)
+sh.BackgroundTransparency = 1
+sh.Parent = s
+
+local blur = Instance.new("ImageLabel")
+blur.Image = "rbxassetid://1316045217"
+blur.ScaleType = Enum.ScaleType.Slice
+blur.SliceCenter = Rect.new(10, 10, 118, 118)
+blur.Size = UDim2.new(1, 0, 1, 0)
+blur.BackgroundTransparency = 1
+blur.ImageTransparency = 0.5
+blur.Parent = sh
+
+local bg = Instance.new("ImageLabel")
+bg.Image = "rbxassetid://15113117803"
+bg.ScaleType = Enum.ScaleType.Stretch
+bg.Size = UDim2.new(0, 400, 0, 500)
+bg.Position = UDim2.new(0, 5, 0, 5)
+bg.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+bg.BorderSizePixel = 0
+bg.Active = true
+bg.Selectable = true
+bg.ClipsDescendants = true
+bg.Parent = sh
+
+local outline = Instance.new("UIStroke")
+outline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+outline.Thickness = 1.5
+outline.Color = Color3.fromRGB(70, 70, 70)
+outline.Transparency = 0
+outline.Parent = bg
+
+local title = Instance.new("TextLabel")
+title.Text = "Oven Gay Sex Roblox GUI"
+title.Size = UDim2.new(1, 0, 0, 50)
+title.BackgroundTransparency = 1
+title.TextScaled = true
+title.Font = Enum.Font.Code
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Parent = bg
+
+local scroll = Instance.new("ScrollingFrame")
+scroll.Size = UDim2.new(1, 0, 1, -50)
+scroll.Position = UDim2.new(0, 0, 0, 50)
+scroll.CanvasSize = UDim2.new(0, 0, 0, 700)
+scroll.ScrollBarThickness = 4
+scroll.BackgroundTransparency = 1
+scroll.Parent = bg
+
+local layout = Instance.new("UIListLayout")
+layout.Padding = UDim.new(0, 10)
+layout.SortOrder = Enum.SortOrder.LayoutOrder
+layout.Parent = scroll
+
+local pad = Instance.new("UIPadding")
+pad.PaddingTop = UDim.new(0, 10)
+pad.PaddingBottom = UDim.new(0, 10)
+pad.PaddingLeft = UDim.new(0, 10)
+pad.PaddingRight = UDim.new(0, 10)
+pad.Parent = scroll
+
+local tools = {
+	"Fireworks",
+	"C4",
+	"M4A1",
+	"RPG",
+	"P90",
+	"Passport",
+	"Riot Shield",
+	"Minigun",
+	"Grenade",
+	"Molotov",
+	"Door Removers",
+	"Inf Yield"
+}
+
+local function btn(name: string, fn: () -> ())
+	local b = Instance.new("TextButton")
+	b.Size = UDim2.new(1, 0, 0, 40)
+	b.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+	b.TextColor3 = Color3.fromRGB(255, 255, 255)
+	b.Font = Enum.Font.Code
+	b.TextSize = 20
+	b.Text = name
+	b.AutoButtonColor = false
+	b.ClipsDescendants = true
+	b.Parent = scroll
+
+	local st = Instance.new("UIStroke")
+	st.Thickness = 1
+	st.Transparency = 0.4
+	st.Color = Color3.fromRGB(60, 60, 60)
+	st.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	st.Parent = b
+
+	b.MouseEnter:Connect(function()
+		b.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+	end)
+	b.MouseLeave:Connect(function()
+		b.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+	end)
+
+	b.MouseButton1Click:Connect(fn)
+end
+
+for _, tool in ipairs(tools) do
+	if tool == "Inf Yield" then
+		btn(tool, function()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+		end)
+	elseif tool == "Door Removers" then
+		btn(tool, function()
+			for _, v in pairs(workspace:GetDescendants()) do
+				if v.Name == "Door" or v.Name == "door" then
+					v:Destroy()
+				end
+			end
+		end)
+	else
+		btn(tool, function()
+			local rem = game.ReplicatedStorage:FindFirstChild("Remotes") and game.ReplicatedStorage.Remotes:FindFirstChild("BuyTool")
+			local t = game.ReplicatedStorage:FindFirstChild("Tools") and game.ReplicatedStorage.Tools:FindFirstChild(tool)
+			if rem and t then
+				rem:FireServer(0, t)
+			end
+		end)
+	end
+end
+
+local dragging = false
+local input: InputObject?
+local start: Vector2 = Vector2.new()
+local startPos: UDim2 = UDim2.new()
+local speed = 0.1
+
+title.InputBegan:Connect(function(i)
+	if i.UserInputType == Enum.UserInputType.MouseButton1 or i.UserInputType == Enum.UserInputType.Touch then
+		dragging = true
+		start = i.Position
+		startPos = sh.Position
+		i.Changed:Connect(function()
+			if i.UserInputState == Enum.UserInputState.End then
+				dragging = false
+			end
+		end)
+	end
+end)
+
+title.InputChanged:Connect(function(i)
+	if i.UserInputType == Enum.UserInputType.MouseMovement or i.UserInputType == Enum.UserInputType.Touch then
+		input = i
+	end
+end)
+
+game:GetService("UserInputService").InputChanged:Connect(function(i)
+	if i == input and dragging then
+		local delta = i.Position - start
+		local pos = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+		game:GetService("TweenService"):Create(sh, TweenInfo.new(speed), {Position = pos}):Play()
+	end
+end)
+
+local UIS = game:GetService("UserInputService")
+UIS.InputBegan:Connect(function(input, gp)
+	if gp then return end
+	if input.KeyCode == Enum.KeyCode.RightAlt then
+		s.Enabled = not s.Enabled
+	end
+end)
