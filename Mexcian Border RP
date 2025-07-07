@@ -140,6 +140,36 @@ for _, tool in ipairs(tools) do
 	end
 end
 
+-- ✅ Firework Spam Button
+btn("Firework Spam", function()
+	local ReplicatedStorage = game:GetService("ReplicatedStorage")
+	local Players = game:GetService("Players")
+	local Player = Players.LocalPlayer
+
+	local Humanoid = Player.Character.Humanoid
+	local BuyTool = ReplicatedStorage.Remotes.BuyTool
+	local Fireworks = ReplicatedStorage.Tools.Fireworks
+
+	local IWant = 100
+
+	for Index = 1, IWant do
+		BuyTool:FireServer(0, Fireworks)
+	end
+
+	local Tools = 0
+	local Connection = Player.Backpack.ChildAdded:Connect(function()
+		Tools += 1
+	end)
+
+	repeat wait() until Tools == IWant
+
+	for _, Tool in Player.Backpack:GetChildren() do
+		Tool.Parent = Player.Character
+		task.wait()
+		Tool:Activate()
+	end
+end)
+
 local dragging = false
 local input: InputObject?
 local start: Vector2 = Vector2.new()
