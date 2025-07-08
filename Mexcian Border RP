@@ -134,7 +134,7 @@ for _, tool in ipairs(tools) do
 			local rem = game.ReplicatedStorage:FindFirstChild("Remotes") and game.ReplicatedStorage.Remotes:FindFirstChild("BuyTool")
 			local t = game.ReplicatedStorage:FindFirstChild("Tools") and game.ReplicatedStorage.Tools:FindFirstChild(tool)
 			if rem and t then
-				rem:FireServer(0.0001, t)
+				rem:FireServer(1, t)
 			end
 		end)
 	end
@@ -149,7 +149,7 @@ btn("Firework Spam", function()
 	local Fireworks = ReplicatedStorage.Tools.Fireworks
 	local IWant = 100
 
-	for Index = 0.0001, IWant do
+	for Index = 1, IWant do
 		BuyTool:FireServer(0.0001, Fireworks)
 	end
 
