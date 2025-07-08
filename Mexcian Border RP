@@ -1,6 +1,5 @@
 -- W??? SIGMA??
 --!strict
---!strict
 
 local p = game:GetService("Players").LocalPlayer
 repeat task.wait() until p and p:FindFirstChild("PlayerGui")
